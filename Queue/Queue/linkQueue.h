@@ -12,6 +12,7 @@ public:
     void enQueue(const elemType &x);
     elemType deQueue();
     elemType getHead() const;
+    elemType getTail() const;
 
 private:
     struct node

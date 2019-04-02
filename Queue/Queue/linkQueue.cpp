@@ -34,6 +34,12 @@ elemType linkQueue<elemType>::getHead() const
 }
 
 template<class elemType>
+elemType linkQueue<elemType>::getTail() const
+{
+    return rear->data;
+}
+
+template<class elemType>
 void linkQueue<elemType>::enQueue(const elemType &x)
 {
     if (rear == NULL)
