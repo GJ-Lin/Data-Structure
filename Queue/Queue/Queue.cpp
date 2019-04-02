@@ -4,11 +4,15 @@
 #include "seqQueue.cpp"
 #include "seqQueue_len.h"
 #include "seqQueue_len.cpp"
+#include "linkQueue.h"
+#include "linkQueue.cpp"
+#include "linkQueue_cir.h"
+#include "linkQueue_cir.cpp"
 using namespace std;
 
 int main()
 {
-    seqQueue_len<int> sq;
+    linkQueue_cir<int> sq;
     cout << sq.isEmpty() << endl;
     for (int i = 1; i <= 25; ++i)
         sq.enQueue(i);
