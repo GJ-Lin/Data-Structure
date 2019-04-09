@@ -12,16 +12,19 @@ public:
     binaryTree(T x) { root = new Node(x); }
     ~binaryTree();
     void clear();
+    void clear(typename binaryTree<T>::Node *&t);
     bool isEmpty() const;
     T Root(T flag) const;
-    void clear(binaryTree<T>::Node);
     T lchild(T x, T flag) const;
     T rchild(T x, T flag) const;
     void delLeft(T x);
     void delRight(T x);
     void preOrder() const;
+    void preOrder(const typename binaryTree<T>::Node *&t) const;
     void midOrder() const;
+    void midOrder(const typename binaryTree<T>::Node *&t) const;
     void postOrder() const;
+    void postOrder(const typename binaryTree<T>::Node *&t) const;
     void levelOrder() const;
     void createTree(T flag);
     T parent(T x, T flag) const { return flag; }
