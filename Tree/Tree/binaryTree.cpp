@@ -26,7 +26,7 @@ void binaryTree<T>::clear()
 }
 
 template<class T>
-void binaryTree<T>::clear(typename binaryTree<T>::Node *&t)//wrap
+void binaryTree<T>::clear(Node *&t)//wrap
 {
     if (t == NULL) return;
     clear(t->left);
@@ -49,7 +49,7 @@ void binaryTree<T>::preOrder() const
 }
 
 template<class T>
-void binaryTree<T>::preOrder(const typename binaryTree<T>::Node *&t) const
+void binaryTree<T>::preOrder(Node *t) const
 {
     if (t == NULL) return;
     cout << t->data << ' ';
@@ -60,12 +60,12 @@ void binaryTree<T>::preOrder(const typename binaryTree<T>::Node *&t) const
 template<class T>
 void binaryTree<T>::midOrder() const
 {
-    cout << "\nMidOrder";
+    cout << "\nMidOrder: ";
     midOrder(root);
 }
 
 template<class T>
-void binaryTree<T>::midOrder(const typename binaryTree<T>::Node *&t) const
+void binaryTree<T>::midOrder(Node *t) const
 {
     if (t == NULL) return;
     midOrder(t->left);
@@ -81,7 +81,7 @@ void binaryTree<T>::postOrder() const
 }
 
 template<class T>
-void binaryTree<T>::postOrder(const typename binaryTree<T>::Node *&t) const
+void binaryTree<T>::postOrder(Node *t) const
 {
     if (t == NULL) return;
     postOrder(t->left);
@@ -104,4 +104,69 @@ void binaryTree<T>::levelOrder() const
         if (tmp->left) que.enQueue(tmp->left);
         if (tmp->right) que.enQueue(tmp->right);
     }
+}
+
+template<class T>
+typename binaryTree<T>::Node *binaryTree<T>::find(T x, Node *t) const
+{
+    Node *tmp;
+    if (t == NULL) return NULL;
+    if (t->data == x) return t;
+    if (tmp = find(x, t->left)) return tmp;
+    else return find(x, t->right);
+}
+
+template<class T>
+void binaryTree<T>::delLeft(T x)
+{
+    Node *tmp = find(x, root);
+    if (tmp == NULL) return;
+    clear(tmp->left);
+}
+
+template<class T>
+void binaryTree<T>::delRight(T x)
+{
+    Node *tmp = find(x, root);
+    if (tmp == NULL) return;
+    clear(tmp->right);
+}
+
+template<class T>
+T binaryTree<T>::lchild(T x, T flag) const
+{
+    Node *tmp = find(x, root);
+    if (tmp == NULL || tmp->left == NULL) return flag;
+    return tmp->left->data;
+}
+
+template<class T>
+T binaryTree<T>::rchild(T x, T flag) const
+{
+    Node *tmp = find(x, root);
+    if (tmp == NULL || tmp->right == NULL) return flag;
+    return tmp->right->data;
+}
+
+template<class T>
+void binaryTree<T>::createTree(T flag)
+{
+    linkQueue<Node *> que;
+    Node *tmp;
+    T x, ldata, rdata;
+
+    cout << "\nInput root: ";
+    cin >> x;
+    root = new Node(x);
+    que.enQueue(root);
+
+    while (!que.isEmpty())
+    {
+        tmp = que.deQueue();
+        cout << "\nInput 2 children of " << tmp->data << " (" << flag << " for empty): ";
+        cin >> ldata >> rdata;
+        if (ldata != flag) que.enQueue(tmp->left = new Node(ldata));
+        if (rdata != flag) que.enQueue(tmp->right = new Node(rdata));
+    }
+    cout << "create completed!\n";
 }

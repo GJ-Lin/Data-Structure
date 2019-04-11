@@ -1,18 +1,34 @@
 #pragma once
 #include "bTree.h"
 #include <iostream>
+#include "linkQueue.h"
+#include "linkQueue.cpp"
 using namespace std;
 
 template <class T>
 class binaryTree : public bTree<T>
 {
-    friend void printTree(const binaryTree &t, T flag);
+    friend void printTree(const binaryTree &t, T flag)
+    {
+        linkQueue<T> q;
+        q.enQueue(t.root->data);
+        cout << endl;
+        while (!q.isEmpty())
+        {
+            char p, l, r;
+            p = q.deQueue();
+            l = t.lchild(p, flag);
+            r = t.rchild(p, flag);
+            cout << p << ' ' << l << ' ' << r << endl;
+            if (l != flag) q.enQueue(l);
+            if (r != flag) q.enQueue(r);
+        }
+    }
 public:
     binaryTree(): root(NULL){}
     binaryTree(T x) { root = new Node(x); }
     ~binaryTree();
     void clear();
-    void clear(typename binaryTree<T>::Node *&t);
     bool isEmpty() const;
     T Root(T flag) const;
     T lchild(T x, T flag) const;
@@ -20,11 +36,8 @@ public:
     void delLeft(T x);
     void delRight(T x);
     void preOrder() const;
-    void preOrder(const typename binaryTree<T>::Node *&t) const;
     void midOrder() const;
-    void midOrder(const typename binaryTree<T>::Node *&t) const;
     void postOrder() const;
-    void postOrder(const typename binaryTree<T>::Node *&t) const;
     void levelOrder() const;
     void createTree(T flag);
     T parent(T x, T flag) const { return flag; }
@@ -40,5 +53,10 @@ private:
     };
 
     Node *root;
+    typename binaryTree<T>::Node * find(T x, typename binaryTree<T>::Node * t) const;
+    void preOrder(typename binaryTree<T>::Node *t) const;
+    void midOrder(typename binaryTree<T>::Node *t) const;
+    void postOrder(typename binaryTree<T>::Node *t) const;
+    void clear(typename binaryTree<T>::Node *&t);
 };
 

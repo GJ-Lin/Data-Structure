@@ -1,3 +1,4 @@
+#pragma once
 #include "pch.h"
 #include "linkQueue.h"
 #include <iostream>
