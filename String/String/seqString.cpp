@@ -2,11 +2,3 @@
 #include "seqString.h"
 
 
-seqString::seqString()
-{
-}
-
-
-seqString::~seqString()
-{
-}
