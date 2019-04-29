@@ -209,6 +209,90 @@ void linkString::remove(int start, int num)
 	merge(startp);
 }
 
+linkString operator+(const linkString& s1, const linkString& s2)
+{
+	char* tmp = new char[s1.len + s2.len + 1];
+	linkString::node* p;
+	int cnt = 0, i;
+	for (p = s1.head->next; p != NULL; p = p->next)
+		for (i = 0; i < p->size; ++i)
+			tmp[cnt++] = p->data[i];
+	for (p = s2.head->next; p != NULL; p = p->next)
+		for (i = 0; i < p->size; ++i)
+			tmp[cnt++] = p->data[i];
+	tmp[cnt] = '\0';
+	linkString returnValue(tmp);
+	delete [] tmp;
+	return returnValue;
+}
+
+bool operator==(const linkString& s1, const linkString& s2)
+{
+	linkString::node* p1 = s1.head->next, * p2 = s2.head->next;
+	int pos1 = 0, pos2 = 0;
+
+	if (s1.len != s2.len) return false;
+	while (p1 && p2)
+	{
+		if (p1->data[pos1] != p2->data[pos2]) return false;
+		if (++pos1 == p1->size)
+		{
+			p1 = p1->next;
+			pos1 = 0;
+		}
+		if (++pos2 == p2->size)
+		{
+			p2 = p2->next;
+			pos2 = 0;
+		}
+	}
+	return true;
+}
+
+bool operator!=(const linkString& s1, const linkString& s2)
+{
+	return !(s1 == s2);
+}
+
+bool operator>(const linkString& s1, const linkString& s2)
+{
+	linkString::node* p1 = s1.head->next, * p2 = s2.head->next;
+	int pos1 = 0, pos2 = 0;
+
+	while (p1)
+	{
+		if (p2 == NULL) return true;
+		if (p1->data[pos1] > p2->data[pos2]) return true;
+		if (p1->data[pos1] < p2->data[pos2]) return false;
+		if (++pos1 == p1->size)
+		{
+			p1 = p1->next;
+			pos1 = 0;
+		}
+		if (++pos2 == p2->size)
+		{
+			p2 = p2->next;
+			pos2 = 0;
+		}
+	}
+	return false;
+}
+
+bool operator>=(const linkString& s1, const linkString& s2)
+{
+	return (s1 == s2 || s1 > s2);
+}
+
+bool operator<(const linkString& s1, const linkString& s2)
+{
+	return !(s1 >= s2);
+}
+
+bool operator<=(const linkString& s1, const linkString& s2)
+{
+	return !(s1 > s2);
+}
+
 ostream& operator<<(ostream& os, const linkString& s)
 {
 	linkString::node* p = s.head->next;
