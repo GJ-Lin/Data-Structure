@@ -1,7 +1,9 @@
 ﻿#include <iostream>
 #include <ctime>
+#include "DisjointSet.h"
 using namespace std;
 const int len = 10;
+
 template<class KEY, class OTHER>
 struct set
 {
@@ -52,14 +54,24 @@ void printset(const set<KEY, OTHER>* data)
 }
 int main()
 {
-	set<int, char> data[len + 1];
-	srand(time(NULL));
-	for (int i = 1; i <= len; ++i)
+	DisjointSet djset(15);
+	char order[10];
+	int i, j, x;
+	while (cin >> order)
 	{
-		data[i].key = data[i].other = randint(1, 99);
+		if (order[0] == 'f')
+		{
+			cin >> x;
+			cout << djset.Find(x);
+		}
+		else if (order[0] == 'u')
+		{
+			cin >> i >> j;
+			djset.Union(i, j);
+		}
+		else if (order[0] == 'q')
+			break;
 	}
-	printset(data);
-	qsort(data, 1, len);
-	printset(data);
+	cout << djset << endl;
 	return 0;
 }
