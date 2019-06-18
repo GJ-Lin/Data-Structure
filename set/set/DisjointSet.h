@@ -13,6 +13,7 @@ public:
 	DisjointSet(int s);
 	~DisjointSet();
 	void Union(int root1, int root2);
+	void UnionLCA(int root1, int root2);
 	int Find(int x);
 private:
 	int size;

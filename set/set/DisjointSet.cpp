@@ -1,6 +1,5 @@
+#pragma once
 #include "DisjointSet.h"
-
-
 
 DisjointSet::DisjointSet(int s) : size(s)
 {
@@ -29,6 +28,14 @@ void DisjointSet::Union(int i, int j)
 		parent[root1] += parent[root2];
 		parent[root2] = root1;
 	}
+}
+
+void DisjointSet::UnionLCA(int i, int j)
+{
+	int root1 = Find(i), root2 = Find(j);
+	if (root1 == root2) return;
+	parent[root1] += parent[root2];
+	parent[root2] = root1;
 }
 
 DisjointSet::~DisjointSet()

@@ -14,12 +14,17 @@ public:
 	void dfs() const;
 	void dfs(int start, bool visited[]) const;
 	void bfs() const;
+	void topSort() const;
+	void unweightedShortDistance(TypeOfVer start, TypeOfEdge noEdge) const;
+	void dijkstra(TypeOfVer start, TypeOfEdge noEdge) const;
+	void printPath(int start, int end, int prev[]) const;
+
 	void print() const
 	{
 		for (int i = 0; i < Vers; ++i)
 		{
-			edgeNode* p = verList[i].head, * q;
-			cout << verList[i].ver << ": ";
+			edgeNode* p = verList[i].head;
+			cout << verList[i].ver << ":\t";
 			while (p != NULL)
 			{
 				cout << verList[p->end].ver << '(' << p->weight << ')' << '\t';

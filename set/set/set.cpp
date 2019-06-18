@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <ctime>
 #include "DisjointSet.h"
+#include "Tree.h"
 using namespace std;
 const int len = 10;
 
@@ -52,7 +53,8 @@ void printset(const set<KEY, OTHER>* data)
 		cout << data[i].key << ' ';
 	cout << endl;
 }
-int main()
+
+void testDJSet()
 {
 	DisjointSet djset(15);
 	char order[10];
@@ -73,5 +75,11 @@ int main()
 			break;
 	}
 	cout << djset << endl;
+}
+int main()
+{
+	Tree t;
+	t.create(-1);
+	cout << t.LCA(8, 14);
 	return 0;
 }

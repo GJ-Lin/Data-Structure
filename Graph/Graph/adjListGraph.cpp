@@ -127,3 +127,131 @@ void adjListGraph<TypeOfVer, TypeOfEdge>::bfs() const
 		cout << endl;
 	}
 }
+
+template<class TypeOfVer, class TypeOfEdge>
+void adjListGraph<TypeOfVer, TypeOfEdge>::topSort() const
+{
+	linkQueue<int> q;
+	edgeNode* p;
+	int current;
+	int* inDegree = new int[Vers];
+	for (int i = 0; i < Vers; ++i) inDegree[i] = 0;
+	for (int i = 0; i < Vers; ++i)
+	{
+		for (p = verList[i].head; p != NULL; p = p->next)
+			++inDegree[p->end];
+	}
+	for (int i = 0; i < Vers; ++i)
+		if (inDegree[i] == 0) q.enQueue(i);
+
+	cout << "topSort: " << endl;
+	while (!q.isEmpty())
+	{
+		current = q.deQueue();
+		cout << verList[current].ver << '\t';
+		for (p = verList[current].head; p != NULL; p = p->next)
+			if (--inDegree[p->end] == 0)
+				q.enQueue(p->end);
+	}
+	cout << endl;
+}
+
+template<class TypeOfVer, class TypeOfEdge>
+void adjListGraph<TypeOfVer, TypeOfEdge>::unweightedShortDistance(TypeOfVer start, TypeOfEdge noEdge) const
+{
+	linkQueue<int> q;
+	TypeOfEdge* distance = new TypeOfEdge[Vers];
+	int* prev = new int[Vers];
+	int u, sNo;
+	edgeNode* p;
+
+	for (int i = 0; i < Vers; ++i) distance[i] = noEdge;
+	sNo = find(start);
+
+	distance[sNo] = 0;
+	prev[sNo] = sNo;
+	q.enQueue(sNo);
+
+	while (!q.isEmpty())
+	{
+		u = q.deQueue();
+		for (p = verList[u].head; p != NULL; p = p->next)
+		{
+			if (distance[p->end] == noEdge)
+			{
+				distance[p->end] = distance[u] + 1;
+				prev[p->end] = u;
+				q.enQueue(p->end);
+			}
+		}
+	}
+
+	for (int i = 0; i < Vers; ++i)
+	{
+		cout << "Shorted path from " << start << " to " << verList[i].ver << " is: " << endl;
+		printPath(sNo, i, prev);
+		cout << endl;
+	}
+}
+
+template<class TypeOfVer, class TypeOfEdge>
+void adjListGraph<TypeOfVer, TypeOfEdge>::dijkstra(TypeOfVer start, TypeOfEdge noEdge) const
+{
+	TypeOfEdge* distance = new TypeOfEdge[Vers];
+	int* prev = new int[Vers];
+	bool* known = new bool[Vers];
+
+	int u, sNo;
+	edgeNode* p;
+	TypeOfEdge min;
+	for (int i = 0; i < Vers; ++i)
+	{
+		known[i] = false;
+		distance[i] = noEdge;
+	}
+	
+	sNo = find(start);
+	distance[sNo] = 0;
+	prev[sNo] = sNo;
+
+	for (int i = 1; i < Vers; ++i)
+	{
+		min = noEdge;
+		for (int j = 0; j < Vers; ++j)
+		{
+			if (!known[j] && distance[j] < min)
+			{
+				min = distance[j];
+				u = j;
+			}
+		}
+		known[u] = true;
+		for (p = verList[u].head; p != NULL; p = p->next)
+		{
+			if (!known[p->end] && distance[p->end] > min + p->weight)
+			{
+				distance[p->end] = min + p->weight;
+				prev[p->end] = u;
+			}
+		}
+	}
+
+	for (int i = 0; i < Vers; ++i)
+	{
+		cout << "Shorted path from " << start << " to " << verList[i].ver << " is: " << endl;
+		printPath(sNo, i, prev);
+		cout << "\tdistance: " << distance[i] << endl;
+	}
+}
+
+template<class TypeOfVer, class TypeOfEdge>
+void adjListGraph<TypeOfVer, TypeOfEdge>::printPath(int start, int end, int prev[]) const
+{
+	if (start == end)
+	{
+		cout << verList[start].ver;
+		return;
+	}
+	printPath(start, prev[end], prev);
+	cout << "-" << verList[end].ver;
+}

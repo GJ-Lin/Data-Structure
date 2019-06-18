@@ -165,8 +165,9 @@ void binaryTree<T>::createTree(T flag)
         tmp = que.deQueue();
         cout << "\nInput 2 children of " << tmp->data << " (" << flag << " for empty): ";
         cin >> ldata >> rdata;
-        if (ldata != flag) que.enQueue(tmp->left = new Node(ldata));
-        if (rdata != flag) que.enQueue(tmp->right = new Node(rdata));
+		if (ldata != flag) que.enQueue(tmp->left = new Node(ldata)); 
+		if (rdata != flag) que.enQueue(tmp->right = new Node(rdata)); 
     }
+
     cout << "create completed!\n";
 }
